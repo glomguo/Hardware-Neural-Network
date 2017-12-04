@@ -4,76 +4,75 @@ clear;
 M = csvread('mnist_train.csv');
 T = csvread('mnist_test.csv');
 
-%{
+
+
+
 % T digits limitation
 digit = 1;
+counter = 0; % count maximum 1's of every row 
 for i = 1:10000
+    count_per_cycle = 0;
     for j = 1:784
-        if(T(i,j+1) > 0)
+        if(T(i,j+1) >= 128)
             T(i,j+1) = 1;
-            break;
+            count_per_cycle = count_per_cycle + 1;
+        else
+            T(i,j+1) = 0;
         end
-        T(i,j+1) = 0; 
+    end
+    if(count_per_cycle > counter)
+        counter = count_per_cycle;
     end
 end
-%}
+TrainImage = T(:,2:785);
 
 
-train_input = M(1:60000,2:785);
-train_output = M(1:60000,1);
 
-test_input = T(1:10000,2:785);
-test_output = T(1:10000,1);
+DVec = zeros(10,60000);
+IVec = zeros(785,60000);
 
-train_output(train_output == 0) = 10; % use '10' to present '0'
-train_output = dummyvar(train_output); 
-
-%{
-load 10kTrain.mat; %load 10,000 training samles
-fea = fea/255;     %10,100*784 sparse matrix normalize nu dividing with 255
-
-for i = 1:10       %creating a 10*784 weight matrix initialize with random value
-    for j = 1:784
-        W(i,j) = randn;
-    end
-    W(i,j) = randn;
-end
-%loop runs for 10,000 times to tarin
-
-for n = 1:10000
-    trn = fea(n,:); %extracting one sample at a time from sparse matrix
-    y = W * trn;    %multiply weight with one sample on each iteration b = 0
-    [maxval, ind] = max(y(:)) %find the max value in output vector y correspond
-                          %to each digit 0 to 9.
-    r = gnd(n,:); %get true value from true value vector (10000x1)
-    e = r - indl; %calculate the error
-
-    if abs(e) ~= 0 %update weights
-        W(ind,:) = W(ind,:) - trn; %decrease weights of max value found in output y
-        W(r+1,:) = W(r+1,:) + trn; %increase weights of true value
-    else
-    end
-end
-%}
-
-%W1 = zeros(10, 28*28);                  % pre-allocation
-%W1(:, x1_step1.keep) = IW1_1;           % reconstruct the full matrix
-%WVec = [W1,b1];
+% Training
+k=0;
+for i=1:60000
+   DVec(:,i) = num2TempratureVec(M(i,1));
+   IVec(:,i) = [ M(i,2:end)'; 1]; 
+end 
+IVecInv = pinv(IVec);
+WVec = DVec*IVecInv;
 
 
-%WVec= importdata('weight.mat');
+Weight = WVec(:,1:784);
+bias = WVec(:,785);
 
+newVec = [Weight,bias./255];
+%maximum = max(max(newVec));
 
-%weight_precision = 12;
 %WVec = round(WVec / max(max(WVec)) * (2^weight_precision-1));
+old_max = max(max(newVec));
+old_min = min(min(newVec));
+newVec = newVec - (min(min(newVec)));
+weight_precision = 12;
+newVec = round(newVec / max(max(newVec)) * (2^weight_precision-1));
+new_max = max(max(newVec));
+new_min = min(min(newVec));
 
+%WVec = vpa(WVec,5);
+%}
 
-%{
+maximum_image = 0;
+
 % Testing
 k = 0;j=0;
  for i=1:10000
    TestImage = [T(i,2:end)';1];% provision for the BIAS in testing as well
-   TestResult = Hardware(WVec,TestImage);
+   %TestResult = Hardware(newVec,TestImage);
+   Te = newVec*TestImage;
+   local_maximum = max(Te);
+   if(local_maximum > maximum_image)
+       maximum_image = local_maximum;
+   end
+   Te = Te == max(Te);
+   TestResult = find(Te) - 1;
    ActualNumber = T(i,1);
     if  TestResult == ActualNumber
        k = k+1;
@@ -84,4 +83,12 @@ k = 0;j=0;
 % fprintf('Success Rate %d %% \n',100 - round(100*j/(j+k)));
 fprintf('Success Rate %d \n', 100 * k/(j+k));
 
-%}
+% newVec_bit = de2bi(newVec);
+
+fid = fopen('weight.txt','wt');
+for ii = 1:size(newVec,1)
+    fprintf(fid,'%g\n',newVec(ii,:));
+    %fprintf(fid,'\n');
+end
+fclose(fid);
+

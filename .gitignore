@@ -1,0 +1,7 @@
+.vscode/
+site/
+**/build/*
+**/*.exe
+**/*.o
+*.pyc
+data.m
