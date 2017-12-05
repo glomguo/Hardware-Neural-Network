@@ -1,0 +1,14 @@
+
+
+// 19 * 3 Multiplier, 19 bit Adder
+Period     : 75 cycles
+Total Power: 1.55e+06 uW
+Total Area : 1325522.365900
+
+// 19 * 1 Multiplier, 19 bit Adder
+Period     : 75 cycles
+Total Power: 1.24e+06 uW
+Total Area : 632320.9526
+
+
+
