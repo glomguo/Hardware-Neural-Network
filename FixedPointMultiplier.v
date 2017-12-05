@@ -15,16 +15,16 @@
 module FixedPointMultiplier (
   input clk,
   input GlobalReset,
-  input [11:0] WeightPort, // sfix12_En11
+  input [18:0] WeightPort, // sfix12_En18
   input [0:0] PixelPort, // sfix10_En0
-  output [18:0] Output_syn // sfix12_En11
+  output [18:0] Output_syn // sfix12_En18
 //@
 );
 //@
 
-wire [11:0] N_1;  
+wire [18:0] N_1;  
 wire [0:0] N_2;  
-wire [11:0] N_3;  
+wire [18:0] N_3;  
 wire [0:0] GlobalEnableSignal1;  
 wire GlobalResetSel;
   wire GlobalEnable1;
@@ -33,23 +33,23 @@ wire GlobalResetSel;
   assign N_3 = WeightPort;
   assign N_2 = PixelPort;
 
-assign Output_syn = {7'b0000000,N_1};
+assign Output_syn = N_1;
   generate
-  begin: Multiplier_12b_11f_block
-    wire        [11:0] tmpOut;
-    wire  	    [0:0] tmpin1;
-    wire        [11:0] tmpin2;
-    wire   	    [0:0] tmpin1_dly;
-    wire        [11:0] tmpin2_dly;
-    wire        [11:0] med;
+  begin: Multiplier_12b_18f_block
+    wire        [19:0] tmpOut;
+    wire         	    [0:0] tmpin1;
+    wire        [18:0] tmpin2;
+    wire        	    [0:0] tmpin1_dly;
+    wire        [18:0] tmpin2_dly;
+    wire        [19:0] med;
     assign med = tmpOut ;
-    synDelayWithEnable #( .bitwidth(12), .preferRAMImpl(2), .delaylength(5) ) multOut_block ( .clk(clk), .en(GlobalEnable1), .grst(GlobalResetSel), .rst(1'b0), .inp(med), .outp(N_1) );
+    synDelayWithEnable #( .bitwidth(19), .preferRAMImpl(2), .delaylength(5) ) multOut_block ( .clk(clk), .en(GlobalEnable1), .grst(GlobalResetSel), .rst(1'b0), .inp(med[18:0]), .outp(N_1) );
     assign tmpin1 = N_2;
     assign tmpin2 = N_3;
     synDelayWithEnable #( .bitwidth(1), .preferRAMImpl(2), .delaylength(1) ) multInp1_block ( .clk(clk), .en(GlobalEnable1), .grst(GlobalResetSel), .rst(1'b0), .inp(tmpin1), .outp(tmpin1_dly) );
-    synDelayWithEnable #( .bitwidth(12), .preferRAMImpl(2), .delaylength(1) ) multInp2_block ( .clk(clk), .en(GlobalEnable1), .grst(GlobalResetSel), .rst(1'b0), .inp(tmpin2), .outp(tmpin2_dly) );
+    synDelayWithEnable #( .bitwidth(19), .preferRAMImpl(2), .delaylength(1) ) multInp2_block ( .clk(clk), .en(GlobalEnable1), .grst(GlobalResetSel), .rst(1'b0), .inp(tmpin2), .outp(tmpin2_dly) );
     assign tmpOut = tmpin1_dly * tmpin2_dly;
-  end // Multiplier_12b_11f_block
+  end // Multiplier_12b_18f_block
   endgenerate
 assign GlobalResetSel = GlobalReset;
 endmodule
