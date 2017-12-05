@@ -12,7 +12,7 @@ set synthetic_library "dw_foundation.sldb"
 
 # Define work path (note: The work path must exist, so you need to create a folder WORK first)
 define_design_lib WORK -path ./WORK
-set alib_library_analysis_path “./alib-52/”
+set alib_library_analysis_path ï¿½./alib-52/ï¿½
 
 # Read the gate-level verilog files
 # analyze -define "define.h"
@@ -67,7 +67,7 @@ report_constraint -verbose > Design.constraint
 check_design > Design.check_design
 check_timing > Design.check_timing
 
-# write -hierarchy -format verilog -output $DESIGN_NAME.vg
-# write_sdf -version 1.0 -context verilog $DESIGN_NAME.sdf
-# set_propagated_clock [all_clocks]
-# write_sdc $DESIGN_NAME.sdc
+write -hierarchy -format verilog -output $DESIGN_NAME.vg
+write_sdf -version 1.0 -context verilog $DESIGN_NAME.sdf
+set_propagated_clock [all_clocks]
+write_sdc $DESIGN_NAME.sdc
