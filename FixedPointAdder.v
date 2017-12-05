@@ -34,7 +34,7 @@ wire GlobalResetSel;
   assign N_2 = Port1;
 assign Output_syn = N_1;
   generate
-  begin: Adder_26b_18f_block
+  begin: Adder_19b_18f_block
     wire enab;
     wire [19:0] tmpOut;
     wire signed [19:0] tmp_N_2_0;
@@ -47,7 +47,7 @@ assign Output_syn = N_1;
     synDelayWithEnable #( .bitwidth(20), .preferRAMImpl(2), .delaylength(2) ) delayForLatency_block ( .clk(clk), .en(enab), .grst(GlobalResetSel), .rst(1'b0), .inp(tmpOutPre), .outp(tmpOut) );
     synBusSatRnd #( .inp_width(20), .out_width(19), .infrac(18), .outfrac(18), .round(0), .sat(0), .datatype("SS") )
     sat_tmpOut ( .inp(tmpOut), .outp(N_1) );
-  end // Adder_26b_18f_block
+  end // Adder_19b_18f_block
   endgenerate
 assign GlobalResetSel = GlobalReset;
 endmodule

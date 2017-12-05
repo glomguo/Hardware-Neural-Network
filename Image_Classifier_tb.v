@@ -8903,6 +8903,10 @@ initial begin
 	$display("---------------------- Total Success Rate = %d Percent",((tot-fal)*100/tot));
 	$display("--------------------------------------------------------------");
 
+	initial begin
+		$sdf_annotate("Image_Classifier.sdf", MyImage_Classifier , , , "maximum"); // setup PnR
+	end
+
 	$stop;
 	end
 

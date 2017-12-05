@@ -67,7 +67,7 @@ report_constraint -verbose > Design.constraint
 check_design > Design.check_design
 check_timing > Design.check_timing
 
-# write -hierarchy -format verilog -output $DESIGN_NAME.vg
-# write_sdf -version 1.0 -context verilog $DESIGN_NAME.sdf
-# set_propagated_clock [all_clocks]
-# write_sdc $DESIGN_NAME.sdc
+write -hierarchy -format verilog -output $DESIGN_NAME.vg
+write_sdf -version 1.0 -context verilog $DESIGN_NAME.sdf
+set_propagated_clock [all_clocks]
+write_sdc $DESIGN_NAME.sdc
