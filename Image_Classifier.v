@@ -10580,26 +10580,26 @@ end
 wire [3:0] L1big1, L1big2, L1big3, L1big4, L1big5, L2big1, L2big2, L3big1, GreatestNum;
 wire [18:0] L1winner1, L1winner2, L1winner3, L1winner4, L1winner5, L2winner1, L2winner2, L3winner1;
 
-assign L1big1 = ($signed(Neuron0) > $signed(Neuron1))?4'd0:4'd1;
-assign L1big2 = ($signed(Neuron2) > $signed(Neuron3))?4'd2:4'd3;
-assign L1big3 = ($signed(Neuron4) > $signed(Neuron5))?4'd4:4'd5;
-assign L1big4 = ($signed(Neuron6) > $signed(Neuron7))?4'd6:4'd7;
-assign L1big5 = ($signed(Neuron8) > $signed(Neuron9))?4'd8:4'd9;
-assign L1winner1 = ($signed(Neuron0) > $signed(Neuron1))?Neuron0:Neuron1;
-assign L1winner2 = ($signed(Neuron2) > $signed(Neuron3))?Neuron2:Neuron3;
-assign L1winner3 = ($signed(Neuron4) > $signed(Neuron5))?Neuron4:Neuron5;
-assign L1winner4 = ($signed(Neuron6) > $signed(Neuron7))?Neuron6:Neuron7;
-assign L1winner5 = ($signed(Neuron8) > $signed(Neuron9))?Neuron8:Neuron9;
+assign L1big1 = ( Neuron0 >  Neuron1)?4'd0:4'd1;
+assign L1big2 = ( Neuron2 >  Neuron3)?4'd2:4'd3;
+assign L1big3 = ( Neuron4 >  Neuron5)?4'd4:4'd5;
+assign L1big4 = ( Neuron6 >  Neuron7)?4'd6:4'd7;
+assign L1big5 = ( Neuron8 >  Neuron9)?4'd8:4'd9;
+assign L1winner1 = ( Neuron0 >  Neuron1)?Neuron0:Neuron1;
+assign L1winner2 = ( Neuron2 >  Neuron3)?Neuron2:Neuron3;
+assign L1winner3 = ( Neuron4 >  Neuron5)?Neuron4:Neuron5;
+assign L1winner4 = ( Neuron6 >  Neuron7)?Neuron6:Neuron7;
+assign L1winner5 = ( Neuron8 >  Neuron9)?Neuron8:Neuron9;
 
-assign L2big1 = ($signed(L1winner1) > $signed(L1winner2))?L1big1:L1big2;
-assign L2big2 = ($signed(L1winner3) > $signed(L1winner4))?L1big3:L1big4;
-assign L2winner1 = ($signed(L1winner1) > $signed(L1winner2))?L1winner1:L1winner2;
-assign L2winner2 = ($signed(L1winner3) > $signed(L1winner4))?L1winner3:L1winner4;
+assign L2big1 = ( L1winner1 >  L1winner2)?L1big1:L1big2;
+assign L2big2 = ( L1winner3 >  L1winner4)?L1big3:L1big4;
+assign L2winner1 = ( L1winner1 >  L1winner2)?L1winner1:L1winner2;
+assign L2winner2 = ( L1winner3 >  L1winner4)?L1winner3:L1winner4;
 
-assign L3big1 = ($signed(L2winner1) > $signed(L2winner2))?L2big1:L2big2;
-assign L3winner1 = ($signed(L2winner1) > $signed(L2winner2))?L2winner1:L2winner2;
+assign L3big1 = ( L2winner1 >  L2winner2)?L2big1:L2big2;
+assign L3winner1 = ( L2winner1 >  L2winner2)?L2winner1:L2winner2;
 
-assign GreatestNum = ($signed(L3winner1) > $signed(L1winner5))?L3big1:L1big5;
+assign GreatestNum = ( L3winner1 >  L1winner5)?L3big1:L1big5;
 
 assign MaxNum = GreatestNum;
 

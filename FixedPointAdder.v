@@ -37,12 +37,12 @@ assign Output_syn = N_1;
   begin: Adder_19b_18f_block
     wire enab;
     wire [19:0] tmpOut;
-    wire signed [19:0] tmp_N_2_0;
-    wire signed [19:0] tmp_N_3_1;
+    wire [19:0] tmp_N_2_0;
+    wire [19:0] tmp_N_3_1;
     wire [19:0] tmpOutPre;
     assign  enab= GlobalEnable1;
-    assign tmp_N_2_0 = ($signed(N_2) << 0);
-    assign tmp_N_3_1 = ($signed(N_3) << 0);
+    assign tmp_N_2_0 = (N_2 << 0);
+    assign tmp_N_3_1 = (N_3 << 0);
     assign  tmpOutPre =   tmp_N_2_0 + tmp_N_3_1;
     synDelayWithEnable #( .bitwidth(20), .preferRAMImpl(2), .delaylength(2) ) delayForLatency_block ( .clk(clk), .en(enab), .grst(GlobalResetSel), .rst(1'b0), .inp(tmpOutPre), .outp(tmpOut) );
     synBusSatRnd #( .inp_width(20), .out_width(19), .infrac(18), .outfrac(18), .round(0), .sat(0), .datatype("SS") )
