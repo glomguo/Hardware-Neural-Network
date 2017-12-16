@@ -29,7 +29,7 @@ set_operating_conditions -min ff1p16vn40c -max ss0p95v125c
 
 
 # Describe the clock waveform & setup operating conditions
-set Tclk 8.0
+set Tclk 2.0
 set TCU  0.1
 set IN_DEL 0.6
 set IN_DEL_MIN 0.3
@@ -53,10 +53,10 @@ set_max_area 0.0
 ungroup -flatten -all
 uniquify
 
-compile -only_design_rule
-compile -map high
-compile -boundary_optimization
-compile -only_hold_time
+# compile -only_design_rule
+compile -map medium
+#compile -boundary_optimization
+# compile -only_hold_time
 
 report_timing -path full -delay min -max_paths 10 -nworst 2 > Design.holdtiming
 report_timing -path full -delay max -max_paths 10 -nworst 2 > Design.setuptiming
